@@ -191,22 +191,22 @@ function restartGame() {
 
 function moveup() {
   myGamePiece.speedY -= 3;
-  myGamePiece.image.src = "mario-moving.png";
+  myGamePiece.image.src = "mario-moving-up.png";
 }
 
 function movedown() {
   myGamePiece.speedY += 3;
-  myGamePiece.image.src = "mario-moving.png";
+  myGamePiece.image.src = "mario-moving-down.png";
 }
 
 function moveleft() {
   myGamePiece.speedX -= 3;
-  myGamePiece.image.src = "mario-moving.png";
+  myGamePiece.image.src = "mario-moving-left.png";
 }
 
 function moveright() {
   myGamePiece.speedX += 3;
-  myGamePiece.image.src = "mario-moving.png";
+  myGamePiece.image.src = "mario-moving-right.png";
 }
 
 function clearmove() {
