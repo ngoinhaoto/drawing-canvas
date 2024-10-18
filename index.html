@@ -3,24 +3,103 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Game Page</title>
     <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f8ff;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
       canvas {
-        border: 1px solid #d3d3d3;
-        background-color: #f1f1f1;
+        border: 2px solid #555;
+        background-color: #e0e0e0;
+        margin-bottom: 20px;
+      }
+
+      button {
+        font-size: 16px;
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #45a049;
+      }
+
+      #restart {
+        background-color: red;
+        margin-top: 30px;
+      }
+
+      #restart:hover {
+        background-color: darkred;
+      }
+
+      p {
+        text-align: center;
+        font-size: 18px;
+        color: #333;
+      }
+
+      .controls {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
       }
     </style>
   </head>
   <body onload="startGame()">
-    <br />
-    <button onmousedown="accelerate(-0.2)" onmouseup="accelerate(0.05)">
-      ACCELERATE
-    </button>
+    <!-- The canvas for the game will be inserted here by JavaScript -->
 
-    <button onclick="restartGame()">RESTART</button>
+    <div class="controls">
+      <div style="text-align: center; width: 480px">
+        <button
+          onmousedown="moveup()"
+          onmouseup="clearmove()"
+          ontouchstart="moveup()"
+        >
+          UP</button
+        ><br /><br />
+        <button
+          onmousedown="moveleft()"
+          onmouseup="clearmove()"
+          ontouchstart="moveleft()"
+        >
+          LEFT
+        </button>
+        <button
+          onmousedown="moveright()"
+          onmouseup="clearmove()"
+          ontouchstart="moveright()"
+        >
+          RIGHT</button
+        ><br /><br />
+        <button
+          onmousedown="movedown()"
+          onmouseup="clearmove()"
+          ontouchstart="movedown()"
+        >
+          DOWN
+        </button>
+      </div>
 
-    <p>Use the ACCELERATE button to stay in the air</p>
-    <p>How long can you stay alive?</p>
+      <button id="restart" onclick="restartGame()">RESTART</button>
+
+      <p>Use the ACCELERATE button to stay in the air</p>
+      <p>How long can you stay alive?</p>
+    </div>
+
     <script src="index.js"></script>
   </body>
 </html>

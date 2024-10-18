@@ -1,15 +1,41 @@
 let myGamePiece;
 let myObstacles = [];
 let myScore;
+let obstacleInterval;
+
+// Function to return a random interval between 150 and 400
+function getRandomInterval() {
+  return Math.floor(Math.random() * (400 - 150 + 1) + 150);
+}
 
 function startGame() {
   // Increase the size of the game piece
-  myGamePiece = new component(60, 60, "megaman.png", 30, 240, "image");
-  myGamePiece.gravity = 0.1; // Adjust gravity for larger size
-  // Increase font size for score
-  myScore = new component("60px", "Consolas", "black", 560, 80, "text");
+  myGamePiece = new component(40, 40, "mario-still.png", 30, 240, "image");
+  myScore = new component("35px", "Consolas", "black", 750, 60, "text");
   myGameArea.start();
+
+  window.addEventListener("keydown", function (e) {
+    switch (e.key) {
+      case "w":
+        moveup();
+        break;
+      case "a":
+        moveleft();
+        break;
+      case "s":
+        movedown();
+        break;
+      case "d":
+        moveright();
+        break;
+    }
+  });
+
+  window.addEventListener("keyup", function (e) {
+    clearmove();
+  });
 }
+
 let myGameArea = {
   canvas: document.createElement("canvas"),
   start: function () {
@@ -39,9 +65,6 @@ function component(width, height, color, x, y, type) {
   this.x = x;
   this.y = y;
 
-  this.gravity = 0;
-  this.gravitySpeed = 0;
-
   if (type == "image") {
     this.image = new Image();
     this.image.src = color;
@@ -60,23 +83,26 @@ function component(width, height, color, x, y, type) {
       ctx.fillRect(this.x, this.y, this.width, this.height);
     }
   };
+
   this.newPos = function () {
+    // update the position with speed values
     this.x += this.speedX;
     this.y += this.speedY;
-  };
 
-  this.newPos = function () {
-    this.gravitySpeed += this.gravity;
-    this.x += this.speedX;
-    this.y += this.speedY + this.gravitySpeed;
-    this.hitBottom();
-  };
+    // stop character from going past canvas width
+    if (this.x < 0) {
+      this.x = 0;
+    }
+    if (this.x > myGameArea.canvas.width - this.width) {
+      this.x = myGameArea.canvas.width - this.width;
+    }
 
-  this.hitBottom = function () {
-    var rockbottom = myGameArea.canvas.height - this.height;
-    if (this.y > rockbottom) {
-      this.y = rockbottom;
-      this.gravitySpeed = 0;
+    // stop character from going past canvas height
+    if (this.y < 0) {
+      this.y = 0;
+    }
+    if (this.y > myGameArea.canvas.height - this.height) {
+      this.y = myGameArea.canvas.height - this.height;
     }
   };
 
@@ -120,22 +146,22 @@ function updateGameArea() {
   myGameArea.clear();
   myGameArea.frameNo += 1;
 
-  if (myGameArea.frameNo == 1 || everyinterval(150)) {
+  if (myGameArea.frameNo == 1 || everyinterval(200)) {
     x = myGameArea.canvas.width;
-    minHeight = 20;
+    minHeight = 80;
     maxHeight = 200;
 
     height = Math.floor(
       Math.random() * (maxHeight - minHeight + 1) + minHeight,
     );
 
-    minGap = 50;
+    minGap = 300;
     maxGap = 500;
 
     gap = Math.floor(Math.random() * (maxHeight - minHeight + 1) + minHeight); // gap between each obstacle
-    myObstacles.push(new component(25, height, "blue", x, 0));
+    myObstacles.push(new component(30, height, "blue", x, 0));
     myObstacles.push(
-      new component(25, x - height - gap, "blue", x, height + gap),
+      new component(30, x - height - gap, "blue", x, height + gap),
     );
   }
 
@@ -156,13 +182,35 @@ function everyinterval(n) {
   return false;
 }
 
-function accelerate(n) {
-  myGamePiece.gravity = n;
-}
-
 function restartGame() {
   myGameArea.stop(); // stop game loop
   myObstacles = []; // Reset obstacles
   myGameArea.clear(); // clear game area
   startGame(); // Restart the game
+}
+
+function moveup() {
+  myGamePiece.speedY -= 3;
+  myGamePiece.image.src = "mario-moving.png";
+}
+
+function movedown() {
+  myGamePiece.speedY += 3;
+  myGamePiece.image.src = "mario-moving.png";
+}
+
+function moveleft() {
+  myGamePiece.speedX -= 3;
+  myGamePiece.image.src = "mario-moving.png";
+}
+
+function moveright() {
+  myGamePiece.speedX += 3;
+  myGamePiece.image.src = "mario-moving.png";
+}
+
+function clearmove() {
+  myGamePiece.speedX = 0;
+  myGamePiece.speedY = 0;
+  myGamePiece.image.src = "mario-still.png";
 }
